@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Products</h2>
+
+<div style="width:100%;">
+    <div style="float:left; width:70%;">
+        <form action="/Home/Category" method="get" id="category" class="option">
+            <span>Category</span>
+            <select id="catName" class="form-control" name="catName" onchange="$('#category').submit()">
+                <!--onchange="$('#category').submit()"-->
+                <option>-- Select --</option>
+                <option value="">All</option>
+                <option value="mother">
+                    Mother's bracelets
+                </option>
+                <option value="baby">
+                    Baby/Christening bracelets
+                </option>
+                <option value="grandmother">
+                    Grandmother's bracelets
+                </option>
+                <option value="wedding">
+                    Wedding bracelets
+                </option>
+                <option value="popular">
+                    Most popular
+                </option>
+                <option value="earnings">
+                    Earrings
+                </option>
+                <option value="nacklaces">
+                    Necklaces
+                </option>
+                <option value="sets">
+                    Sets
+                </option>
+            </select>
+        </form>
+        <br />
+        <div id="mother">
+            How Many Strands: <select id="strands" class="form-control">
+                <option value="1">
+                    1 Strand Bracelet
+                </option>
+                <option value="2">
+                    2 Strand Bracelet (+ $10.00)
+                </option>
+                <option value="3">
+                    3 Strand Bracelet (+ $20.00)
+                </option>
+                <option value="4">
+                    4 Strand Bracelet (+ $30.00)
+                </option>
+            </select>
+            <br />
+            Size: <select id="size" class="form-control">
+                <option>Select Size</option>
+                <option value="small">
+                    7 (Average Small)
+                </option>
+                <option value="medium">
+                    7.5 (Average Medium)
+                </option>
+                <option value="large">
+                    8 (Large)
+                </option>
+                <option value="xlarge">
+                    8.5 (Extra Large)
+                </option>
+            </select>
+            <br />
+            1st Strand Name: <input type="text" /><br />
+            2nd Strand Name: <input type="text" /><br />
+            3rd Strand Name: <input type="text" /><br />
+            4th Strand Name: <input type="text" />
+        </div>
+    </div>
+
+    <div style="float:right; width:30%;">
+        @if (ViewBag.Products.Count == 0)
+        {
+            <br />
+            <div id="EmptyDataMsg" class="alert alert-info">
+                <strong>Welcome!</strong> Our shop is currently empty.
+            </div>
+        }
+        else
+        {
+            <div class="list-view">
+                @foreach (var item in ViewBag.Products)
+                {
+                    <div class="list-item">
+                        <span class="p-cart">@item.Category</span>
+                        <span class="p-brand">@item.Brand</span>
+                        <span class="p-name">@item.PName</span>
+                        <span class="p-description">@item.Description</span>
+                        <div class="add-to-cart">
+                            @Html.ActionLink("add to cart", "AddToCart", "Home", new { id = item.PID }, null)
+                            <span class="p-price">@String.Format("{0:c}", item.UnitPrice)</span>
+                        </div>
+                        <span class="p-unit">
+                            @item.UnitsInStock
+                            @if (item.UnitsInStock > 1)
+                            {
+                                <text>units</text>
+                            }
+                            else
+                            {
+                                <text>unit</text>
+                            }
+                        </span>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+
+</div>
+
+    @*<tr>
+            <td>@item.pname</td>
+            <td>@string.format("{0:c}", item.unitprice)</td>
+            <td>
+                <a class="quantity" onclick="change(this, 1, @item.pid)">+</a>
+                <span>@item.quantity</span>
+                <a class="quantity" onclick="change(this, 0, @item.pid)">-</a>
+                <a class="remove" onclick="change(this, -1, @item.pid)">remove</a>
+            </td>
+        </tr>*@
